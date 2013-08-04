@@ -1,16 +1,21 @@
 {
-  "name": "guriddo",
-  "version": "0.1",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "slickgrid": "b96dea6840d2da1e68728bbf649279946f7ce467",
-    "jquery": "~2.0.3",
-    "lodash": "~1.3.1"
-  }
+	"name": "guriddo",
+	"version": "0.1",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"slickgrid": "b96dea6840d2da1e68728bbf649279946f7ce467",
+		"jquery": "~2.0.3",
+		"lodash": "~1.3.1",
+		"guriddo-formatfactory": "*"
+	},
+	"devDependencies": {
+		"moment": "~2.1.x",
+		"numeral": "~1.4.x"
+	}
 }

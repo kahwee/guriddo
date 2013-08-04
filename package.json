@@ -1,0 +1,32 @@
+{
+	"name": "guriddo",
+	"version": "1.0.0",
+	"author": "KahWee Teng <t@kw.sg>",
+	"description": "Guriddo for SlickGrid that supports frozen column",
+	"contributors": [{
+		"name": "KahWee Teng",
+		"email": "t@kw.sg"
+	}],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kahwee/guriddo.git"
+	},
+	"keywords": [
+		"slickgrid",
+		"spreadsheet",
+		"column",
+		"freeze",
+		"guriddo"
+	],
+	"dependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-coffee": "~0.7.x",
+		"grunt-contrib-jshint": "~0.6.x",
+		"grunt-contrib-watch": "~0.5.x",
+		"grunt-contrib-uglify": "~0.2.x"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=0.10"
+	}
+}
