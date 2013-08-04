@@ -1,7 +1,10 @@
+#test-grid {
+	height: 450px;
+}
 .guriddo {
 	position: relative;
 }
 .guriddo-widget {
-	height: 400px;
+	height: 450px;
 	position: absolute;
 }

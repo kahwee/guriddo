@@ -60,9 +60,6 @@ var columns = [{
 	name: "Effort Driven",
 	field: "effortDriven"
 }];
-var rawFormatter = function(row, cell, value, columnDef, dataContext) {
-	return value;
-};
 
 for (var i = 0; i < columns.length; i++) {
 	columns[i].header = {
