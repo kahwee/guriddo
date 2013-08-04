@@ -20,6 +20,7 @@
       this.data = data;
       this.columns = columns;
       this.options = options;
+      this.updateFrozenWidth = __bind(this.updateFrozenWidth, this);
       this.initWithFrozen = __bind(this.initWithFrozen, this);
       this.el = $(container);
       if (this.options.frozenColumn) {
@@ -62,15 +63,22 @@
       elMainVp.scroll(function(ev) {
         return elFrozenVp.scrollTop(ev.target.scrollTop);
       });
+      this.elFrozen.find('.slick-resizable-handle').on('drag', function(ev) {
+        return _this.updateFrozenWidth();
+      });
       return this.gridFrozen.onColumnsResized.notify = function(ev, args, e) {
-        var frozenW;
-        frozenW = _this.elFrozen.find('.slick-header-column').width() + 10;
-        _this.elFrozen.css({
-          left: "-" + frozenW + "px",
-          width: "" + frozenW + "px"
-        });
-        return _this.el.css('margin-left', frozenW);
+        return _this.updateFrozenWidth();
       };
+    };
+
+    GuriddoWithFrozen.prototype.updateFrozenWidth = function() {
+      var frozenW;
+      frozenW = this.elFrozen.find('.slick-header-column').width() + 10;
+      this.elFrozen.css({
+        left: "-" + frozenW + "px",
+        width: "" + frozenW + "px"
+      });
+      return this.el.css('margin-left', frozenW);
     };
 
     return GuriddoWithFrozen;

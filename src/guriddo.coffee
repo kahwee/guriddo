@@ -42,14 +42,19 @@ class GuriddoWithFrozen
 		elMainVp.scroll (ev) ->
 			elFrozenVp.scrollTop(ev.target.scrollTop)
 
-		@gridFrozen.onColumnsResized.notify = (ev, args, e) =>
-			frozenW = @elFrozen.find('.slick-header-column').width() + 10;
-			@elFrozen.css(
-				left: "-#{frozenW}px",
-				width: "#{frozenW}px",
-			)
-			@el.css('margin-left', frozenW);
+		@elFrozen.find('.slick-resizable-handle').on 'drag', (ev) =>
+			@updateFrozenWidth()
 
+		@gridFrozen.onColumnsResized.notify = (ev, args, e) =>
+			@updateFrozenWidth()
+
+	updateFrozenWidth: =>
+		frozenW = @elFrozen.find('.slick-header-column').width() + 10;
+		@elFrozen.css(
+			left: "-#{frozenW}px",
+			width: "#{frozenW}px",
+		)
+		@el.css('margin-left', frozenW);
 
 $.extend(true, window, {
 	"Guriddo":

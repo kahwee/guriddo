@@ -88,7 +88,8 @@ var options = {
 	enableColumnReorder: false,
 	enableAddRow: true,
 	defaultColumnWidth: 300,
-	formatterFactory: Guriddo.FormatterFactory
+	formatterFactory: Guriddo.FormatterFactory,
+	syncColumnCellResize: true,
 };
 
 
