@@ -4,6 +4,12 @@
 .guriddo {
 	position: relative;
 }
+.guriddo-frozen {
+	-ms-overflow-style: none;
+}
+.guriddo-main {
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+}
 .guriddo-widget {
 	height: 450px;
 	position: absolute;

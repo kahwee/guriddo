@@ -41,6 +41,8 @@ class GuriddoWithFrozen
 		elFrozenVp.css('overflow', 'hidden')
 		elMainVp.scroll (ev) ->
 			elFrozenVp.scrollTop(ev.target.scrollTop)
+		elFrozenVp.scroll (ev) ->
+			elMainVp.scrollTop(ev.target.scrollTop)
 
 		@elFrozen.find('.slick-resizable-handle').on 'drag', (ev) =>
 			@updateFrozenWidth()

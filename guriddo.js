@@ -63,6 +63,9 @@
       elMainVp.scroll(function(ev) {
         return elFrozenVp.scrollTop(ev.target.scrollTop);
       });
+      elFrozenVp.scroll(function(ev) {
+        return elMainVp.scrollTop(ev.target.scrollTop);
+      });
       this.elFrozen.find('.slick-resizable-handle').on('drag', function(ev) {
         return _this.updateFrozenWidth();
       });
