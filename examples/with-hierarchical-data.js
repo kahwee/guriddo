@@ -198,3 +198,16 @@ dataView.onRowsChanged.subscribe(function(e, args) {
 });
 
 window.grid = grid;
+
+$('.guriddo-main .slick-viewport').onescroll({
+	height: "424px",
+	canvas: $('grid-canvas'),
+	scrollbars: [{
+		type: "VerticalRight",
+		railPadding: ['8px', '8px'],
+	}, {
+		type: "HorizontalBottom"
+	}, {
+		type: "HorizontalTop"
+	}]
+});
