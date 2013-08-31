@@ -1,22 +1,23 @@
 {
-	"name": "guriddo",
-	"version": "0.1",
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"bower_components",
-		"test",
-		"tests"
-	],
-	"dependencies": {
-		"slickgrid": "70935e0191214a64d58db80176be65ab18c0abb5",
-		"jquery": ">=1.10.2",
-		"lodash": ">=1.3.1",
-		"jquery.onescroll": "d86c0a5a322e8ba0f000059ce0c5f93f1ae490d4",
-		"guriddo-formatfactory": "*"
-	},
-	"devDependencies": {
-		"moment": "~2.1.x",
-		"numeral": "~1.4.x"
-	}
+  "name": "guriddo",
+  "version": "0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "slickgrid": "70935e0191214a64d58db80176be65ab18c0abb5",
+    "jquery": ">=1.10.2",
+    "lodash": ">=1.3.1",
+    "jquery.onescroll": "d86c0a5a322e8ba0f000059ce0c5f93f1ae490d4",
+    "guriddo-formatfactory": "*",
+    "select2": "~3.4.2"
+  },
+  "devDependencies": {
+    "moment": "~2.1.x",
+    "numeral": "~1.4.x"
+  }
 }

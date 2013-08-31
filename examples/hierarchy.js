@@ -31,6 +31,24 @@ var columns = [{
 	id: "duration",
 	name: "Duration",
 	field: "duration",
+	fieldOptions: [
+		"duration",
+		"finish"
+	],
+	header: {
+		menu: {
+			items: [{
+				title: "Sort Ascending",
+				command: "sort-asc"
+			}, {
+				title: "Sort Descending",
+				command: "sort-desc"
+			}, {
+				title: 'Duration',
+				command: 'change-menu'
+			}]
+		}
+	},
 	minWidth: 100
 }, {
 	id: "start",
@@ -54,13 +72,26 @@ var columns = [{
 
 
 
+// Get the item column value using a custom 'fieldIdx' column param
+var getItemColumnValue = function(item, column) {
+	if (!_.isEmpty(column.fieldOptions)) {}
+	//console.log(item, column.fieldOptions);
+	var values = item[column.field];
+	if (column.fieldIdx !== undefined) {
+		return values && values[column.fieldIdx];
+	} else {
+		return values;
+	}
+}
+
 var options = {
 	frozenColumn: true,
 	enableColumnReorder: false,
 	enableAddRow: true,
 	formatterFactory: Guriddo.FormatterFactory,
 	syncColumnCellResize: true,
-	forceFitColumns: false
+	forceFitColumns: false,
+	dataItemColumnValueExtractor: getItemColumnValue
 };
 
 
@@ -170,5 +201,32 @@ dataView.onRowsChanged.subscribe(function(e, args) {
 	grid.invalidateRows(args.rows);
 	grid.render();
 });
+
+
+var headerMenuPlugin = new Slick.Plugins.HeaderMenu({});
+
+headerMenuPlugin.onBeforeMenuShow.subscribe(function(e, args) {
+	var menu = args.menu;
+
+	// We can add or modify the menu here, or cancel it by returning false.
+	var i = menu.items.length;
+	menu.items.push({
+		title: "Menu item " + i,
+		command: "item" + i
+	});
+});
+
+headerMenuPlugin.onCommand.subscribe(function(e, args) {
+	if (args.command === 'change-menu') {
+		args.field = "start";
+		var hey = grid.gridMain.getColumns();
+		hey[1].field = "start";
+		grid.gridMain.setColumns(hey);
+		console.log(args, e);
+	}
+});
+
+grid.gridMain.registerPlugin(headerMenuPlugin);
+
 
 window.grid = grid;
