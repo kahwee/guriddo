@@ -38,13 +38,12 @@ var columns = [{
 	header: {
 		menu: {
 			items: [{
-				title: "Sort Ascending",
-				command: "sort-asc"
+				text: 'Duration',
+				value: "duration",
+				command: 'change-menu'
 			}, {
-				title: "Sort Descending",
-				command: "sort-desc"
-			}, {
-				title: 'Duration',
+				text: 'Start',
+				value: "start",
 				command: 'change-menu'
 			}]
 		}
@@ -203,7 +202,7 @@ dataView.onRowsChanged.subscribe(function(e, args) {
 });
 
 
-var headerMenuPlugin = new Slick.Plugins.HeaderMenu({});
+var headerMenuPlugin = new Slick.Plugins.SelectHeader({});
 
 headerMenuPlugin.onBeforeMenuShow.subscribe(function(e, args) {
 	var menu = args.menu;
@@ -218,11 +217,9 @@ headerMenuPlugin.onBeforeMenuShow.subscribe(function(e, args) {
 
 headerMenuPlugin.onCommand.subscribe(function(e, args) {
 	if (args.command === 'change-menu') {
-		args.field = "start";
 		var hey = grid.gridMain.getColumns();
-		hey[1].field = "start";
+		hey[1].field = args.$selected.val();
 		grid.gridMain.setColumns(hey);
-		console.log(args, e);
 	}
 });
 
