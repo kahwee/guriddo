@@ -29,15 +29,17 @@ class GuriddoWithFrozen
 		columnFrozenW = columnFrozen[0].width || 100;
 		columnMain = columns[1...]
 
-		@el.css('margin-left', columnFrozenW);
+		@el.css('margin-left', columnFrozenW)
 		@el.append("<div class=\"#{@frozenClassName} #{@widgetClassName}\" style=\"width: #{columnFrozenW}px; left: -#{columnFrozenW}px; \"></div><div class=\"#{@mainClassName} #{@widgetClassName}\" style=\"width: 100%;\"></div>")
-		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, columnFrozen, options);
-		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, columnMain, options);
+		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, columnFrozen, options)
+		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, columnMain, options)
 
 		@$frozen = $("#{@container} .#{@frozenClassName}")
 		@$main = $("#{@container} .#{@mainClassName}")
 		@$frozenVp = @$frozen.find(".#{@slickGridVpClassName}")
 		@$mainVp = @$main.find(".#{@slickGridVpClassName}")
+		@$frozenVpCv = @$frozenVp.find(".grid-canvas")
+		@$mainVpCv = @$mainVp.find(".grid-canvas")
 		@$frozenVp.css "overflow", "hidden"
 		@$mainVp.scroll (ev) =>
 			@$frozenVp.scrollTop(ev.target.scrollTop)
@@ -59,8 +61,9 @@ class GuriddoWithFrozen
 		@el.css('margin-left', frozenW);
 
 	autosizeColumns: =>
-		@gridMain.resizeCanvas()
-		@gridMain.autosizeColumns()
+		if @$mainVpCv.width() < @$mainVp.width()
+			@gridMain.resizeCanvas()
+			@gridMain.autosizeColumns()
 
 $.extend(true, window, {
 	"Guriddo":

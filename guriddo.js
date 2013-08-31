@@ -60,6 +60,8 @@
       this.$main = $("" + this.container + " ." + this.mainClassName);
       this.$frozenVp = this.$frozen.find("." + this.slickGridVpClassName);
       this.$mainVp = this.$main.find("." + this.slickGridVpClassName);
+      this.$frozenVpCv = this.$frozenVp.find(".grid-canvas");
+      this.$mainVpCv = this.$mainVp.find(".grid-canvas");
       this.$frozenVp.css("overflow", "hidden");
       this.$mainVp.scroll(function(ev) {
         return _this.$frozenVp.scrollTop(ev.target.scrollTop);
@@ -86,8 +88,10 @@
     };
 
     GuriddoWithFrozen.prototype.autosizeColumns = function() {
-      this.gridMain.resizeCanvas();
-      return this.gridMain.autosizeColumns();
+      if (this.$mainVpCv.width() < this.$mainVp.width()) {
+        this.gridMain.resizeCanvas();
+        return this.gridMain.autosizeColumns();
+      }
     };
 
     return GuriddoWithFrozen;
