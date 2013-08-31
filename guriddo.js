@@ -20,6 +20,7 @@
       this.data = data;
       this.columns = columns;
       this.options = options;
+      this.autosizeColumns = __bind(this.autosizeColumns, this);
       this.updateFrozenWidth = __bind(this.updateFrozenWidth, this);
       this.initWithFrozen = __bind(this.initWithFrozen, this);
       this.el = $(container);
@@ -46,7 +47,7 @@
     };
 
     GuriddoWithFrozen.prototype.initWithFrozen = function() {
-      var columnFrozen, columnFrozenW, columnMain, elFrozenVp, elMainVp,
+      var columnFrozen, columnFrozenW, columnMain,
         _this = this;
       columnFrozen = columns.slice(0, 1);
       columnFrozenW = columnFrozen[0].width || 100;
@@ -55,18 +56,18 @@
       this.el.append("<div class=\"" + this.frozenClassName + " " + this.widgetClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + " " + this.widgetClassName + "\" style=\"width: 100%;\"></div>");
       this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, options);
       this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, columnMain, options);
-      this.elFrozen = $("" + this.container + " ." + this.frozenClassName);
-      this.elMain = $("" + this.container + " ." + this.mainClassName);
-      elFrozenVp = this.elFrozen.find("." + this.slickGridVpClassName);
-      elMainVp = this.elMain.find("." + this.slickGridVpClassName);
-      elFrozenVp.css('overflow', 'hidden');
-      elMainVp.scroll(function(ev) {
-        return elFrozenVp.scrollTop(ev.target.scrollTop);
+      this.$frozen = $("" + this.container + " ." + this.frozenClassName);
+      this.$main = $("" + this.container + " ." + this.mainClassName);
+      this.$frozenVp = this.$frozen.find("." + this.slickGridVpClassName);
+      this.$mainVp = this.$main.find("." + this.slickGridVpClassName);
+      this.$frozenVp.css("overflow", "hidden");
+      this.$mainVp.scroll(function(ev) {
+        return _this.$frozenVp.scrollTop(ev.target.scrollTop);
       });
-      elFrozenVp.scroll(function(ev) {
-        return elMainVp.scrollTop(ev.target.scrollTop);
+      this.$frozenVp.scroll(function(ev) {
+        return _this.$mainVp.scrollTop(ev.target.scrollTop);
       });
-      this.elFrozen.find('.slick-resizable-handle').on('drag', function(ev) {
+      this.$frozen.find('.slick-resizable-handle').on('drag', function(ev) {
         return _this.updateFrozenWidth();
       });
       return this.gridFrozen.onColumnsResized.notify = function(ev, args, e) {
@@ -76,12 +77,17 @@
 
     GuriddoWithFrozen.prototype.updateFrozenWidth = function() {
       var frozenW;
-      frozenW = this.elFrozen.find('.slick-header-column').width() + 10;
-      this.elFrozen.css({
+      frozenW = this.$frozen.find('.slick-header-column').width() + 10;
+      this.$frozen.css({
         left: "-" + frozenW + "px",
         width: "" + frozenW + "px"
       });
       return this.el.css('margin-left', frozenW);
+    };
+
+    GuriddoWithFrozen.prototype.autosizeColumns = function() {
+      this.gridMain.resizeCanvas();
+      return this.gridMain.autosizeColumns();
     };
 
     return GuriddoWithFrozen;

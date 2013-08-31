@@ -34,29 +34,33 @@ class GuriddoWithFrozen
 		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, columnFrozen, options);
 		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, columnMain, options);
 
-		@elFrozen = $("#{@container} .#{@frozenClassName}")
-		@elMain = $("#{@container} .#{@mainClassName}")
-		elFrozenVp = @elFrozen.find(".#{@slickGridVpClassName}")
-		elMainVp = @elMain.find(".#{@slickGridVpClassName}")
-		elFrozenVp.css('overflow', 'hidden')
-		elMainVp.scroll (ev) ->
-			elFrozenVp.scrollTop(ev.target.scrollTop)
-		elFrozenVp.scroll (ev) ->
-			elMainVp.scrollTop(ev.target.scrollTop)
+		@$frozen = $("#{@container} .#{@frozenClassName}")
+		@$main = $("#{@container} .#{@mainClassName}")
+		@$frozenVp = @$frozen.find(".#{@slickGridVpClassName}")
+		@$mainVp = @$main.find(".#{@slickGridVpClassName}")
+		@$frozenVp.css "overflow", "hidden"
+		@$mainVp.scroll (ev) =>
+			@$frozenVp.scrollTop(ev.target.scrollTop)
+		@$frozenVp.scroll (ev) =>
+			@$mainVp.scrollTop(ev.target.scrollTop)
 
-		@elFrozen.find('.slick-resizable-handle').on 'drag', (ev) =>
+		@$frozen.find('.slick-resizable-handle').on 'drag', (ev) =>
 			@updateFrozenWidth()
 
 		@gridFrozen.onColumnsResized.notify = (ev, args, e) =>
 			@updateFrozenWidth()
 
 	updateFrozenWidth: =>
-		frozenW = @elFrozen.find('.slick-header-column').width() + 10;
-		@elFrozen.css(
+		frozenW = @$frozen.find('.slick-header-column').width() + 10;
+		@$frozen.css(
 			left: "-#{frozenW}px",
 			width: "#{frozenW}px",
 		)
 		@el.css('margin-left', frozenW);
+
+	autosizeColumns: =>
+		@gridMain.resizeCanvas()
+		@gridMain.autosizeColumns()
 
 $.extend(true, window, {
 	"Guriddo":
