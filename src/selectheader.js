@@ -1,12 +1,5 @@
 (function($) {
-	// register namespace
-	$.extend(true, window, {
-		"Slick": {
-			"Plugins": {
-				"SelectHeader": HeaderMenu
-			}
-		}
-	});
+	"use strict";
 
 
 	/***
@@ -112,7 +105,7 @@
 
 
 		function handleBodyMouseDown(e) {
-			if ($menu && $menu[0] != e.target && !$.contains($menu[0], e.target)) {
+			if ($menu && $menu[0] !== e.target && !$.contains($menu[0], e.target)) {
 				hideMenu();
 			}
 		}
@@ -170,7 +163,7 @@
 			var item = $(this).data("item");
 
 
-			if (command != null && command != '') {
+			if (command !== null && command !== '') {
 				_self.onCommand.notify({
 					"grid": _grid,
 					"$selected": $selected,
@@ -196,4 +189,12 @@
 			"onCommand": new Slick.Event()
 		});
 	}
+	// register namespace
+	$.extend(true, window, {
+		"Slick": {
+			"Plugins": {
+				"SelectHeader": HeaderMenu
+			}
+		}
+	});
 })(jQuery);

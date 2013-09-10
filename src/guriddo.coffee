@@ -29,10 +29,10 @@ class GuriddoWithFrozen
 		columnFrozenW = columnFrozen[0].width || 100;
 		columnMain = columns[1...]
 
-		@el.css('margin-left', columnFrozenW)
+		@el.css('margin-left', columnFrozenW).addClass('gurrido')
 		@el.append("<div class=\"#{@frozenClassName} #{@widgetClassName}\" style=\"width: #{columnFrozenW}px; left: -#{columnFrozenW}px; \"></div><div class=\"#{@mainClassName} #{@widgetClassName}\" style=\"width: 100%;\"></div>")
-		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, columnFrozen, options)
-		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, columnMain, options)
+		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, columnFrozen, @options)
+		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, columnMain, @options)
 
 		@$frozen = $("#{@container} .#{@frozenClassName}")
 		@$main = $("#{@container} .#{@mainClassName}")

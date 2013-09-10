@@ -52,10 +52,10 @@
       columnFrozen = columns.slice(0, 1);
       columnFrozenW = columnFrozen[0].width || 100;
       columnMain = columns.slice(1);
-      this.el.css('margin-left', columnFrozenW);
+      this.el.css('margin-left', columnFrozenW).addClass('gurrido');
       this.el.append("<div class=\"" + this.frozenClassName + " " + this.widgetClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + " " + this.widgetClassName + "\" style=\"width: 100%;\"></div>");
-      this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, options);
-      this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, columnMain, options);
+      this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, this.options);
+      this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, columnMain, this.options);
       this.$frozen = $("" + this.container + " ." + this.frozenClassName);
       this.$main = $("" + this.container + " ." + this.mainClassName);
       this.$frozenVp = this.$frozen.find("." + this.slickGridVpClassName);

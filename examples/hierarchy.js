@@ -85,7 +85,7 @@ var getItemColumnValue = function(item, column) {
 
 var options = {
 	frozenColumn: true,
-	enableColumnReorder: false,
+	enableColumnReorder: true,
 	enableAddRow: true,
 	formatterFactory: Guriddo.FormatterFactory,
 	syncColumnCellResize: true,
