@@ -23,6 +23,7 @@
       this.autosizeColumns = __bind(this.autosizeColumns, this);
       this.updateFrozenWidth = __bind(this.updateFrozenWidth, this);
       this.initWithFrozen = __bind(this.initWithFrozen, this);
+      this.setColumns = __bind(this.setColumns, this);
       this.el = $(container);
       if (this.options.frozenColumn) {
         this.initWithFrozen();
@@ -30,6 +31,32 @@
         this.initWithoutFrozen();
       }
     }
+
+    GuriddoWithFrozen.prototype.setColumns = function(columns) {
+      var column, columnFrozen, columnMain, _fn, _fn1, _i, _j, _len, _len1;
+      this.columns = columns;
+      columnFrozen = columns.slice(0, 1);
+      columnMain = columns.slice(1);
+      _fn = function(column) {
+        return column.grid = 0;
+      };
+      for (_i = 0, _len = columnFrozen.length; _i < _len; _i++) {
+        column = columnFrozen[_i];
+        _fn(column);
+      }
+      _fn1 = function(column) {
+        return column.grid = 1;
+      };
+      for (_j = 0, _len1 = columnMain.length; _j < _len1; _j++) {
+        column = columnMain[_j];
+        _fn1(column);
+      }
+      return [columnFrozen, columnMain];
+    };
+
+    GuriddoWithFrozen.prototype.getColumns = function() {
+      return [].concat(this.gridFrozen.getColumns(), this.gridMain.getColumns());
+    };
 
     GuriddoWithFrozen.prototype.invalidateRows = function(rows) {
       this.gridFrozen.invalidateRows(rows);
@@ -47,11 +74,10 @@
     };
 
     GuriddoWithFrozen.prototype.initWithFrozen = function() {
-      var columnFrozen, columnFrozenW, columnMain,
+      var columnFrozen, columnFrozenW, columnMain, _ref,
         _this = this;
-      columnFrozen = columns.slice(0, 1);
+      _ref = this.setColumns(columns), columnFrozen = _ref[0], columnMain = _ref[1];
       columnFrozenW = columnFrozen[0].width || 100;
-      columnMain = columns.slice(1);
       this.el.css('margin-left', columnFrozenW).addClass('gurrido');
       this.el.append("<div class=\"" + this.frozenClassName + " " + this.widgetClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + " " + this.widgetClassName + "\" style=\"width: 100%;\"></div>");
       this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, this.options);

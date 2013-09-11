@@ -12,6 +12,18 @@ class GuriddoWithFrozen
 		else
 			@initWithoutFrozen()
 
+	setColumns: (@columns) =>
+		columnFrozen = columns[0...1]
+		columnMain = columns[1...]
+		for column in columnFrozen then do (column) ->
+			column.grid = 0
+		for column in columnMain then do (column) ->
+			column.grid = 1
+		[columnFrozen, columnMain]
+
+	getColumns: ->
+		[].concat @gridFrozen.getColumns(), @gridMain.getColumns()
+
 	invalidateRows: (rows) ->
 		@gridFrozen.invalidateRows(rows)
 		@gridMain.invalidateRows(rows)
@@ -25,9 +37,8 @@ class GuriddoWithFrozen
 		@gridMain.updateRowCount()
 
 	initWithFrozen: =>
-		columnFrozen = columns[0...1]
+		[columnFrozen, columnMain] = @setColumns(columns)
 		columnFrozenW = columnFrozen[0].width || 100;
-		columnMain = columns[1...]
 
 		@el.css('margin-left', columnFrozenW).addClass('gurrido')
 		@el.append("<div class=\"#{@frozenClassName} #{@widgetClassName}\" style=\"width: #{columnFrozenW}px; left: -#{columnFrozenW}px; \"></div><div class=\"#{@mainClassName} #{@widgetClassName}\" style=\"width: 100%;\"></div>")
