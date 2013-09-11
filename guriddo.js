@@ -35,8 +35,8 @@
     GuriddoWithFrozen.prototype.setColumns = function(columns) {
       var column, columnFrozen, columnMain, _fn, _fn1, _i, _j, _len, _len1;
       this.columns = columns;
-      columnFrozen = columns.slice(0, 1);
-      columnMain = columns.slice(1);
+      columnFrozen = this.columns.slice(0, 1);
+      columnMain = this.columns.slice(1);
       _fn = function(column) {
         return column.grid = 0;
       };
@@ -76,7 +76,7 @@
     GuriddoWithFrozen.prototype.initWithFrozen = function() {
       var columnFrozen, columnFrozenW, columnMain, _ref,
         _this = this;
-      _ref = this.setColumns(columns), columnFrozen = _ref[0], columnMain = _ref[1];
+      _ref = this.setColumns(this.columns), columnFrozen = _ref[0], columnMain = _ref[1];
       columnFrozenW = columnFrozen[0].width || 100;
       this.el.css('margin-left', columnFrozenW).addClass('gurrido');
       this.el.append("<div class=\"" + this.frozenClassName + " " + this.widgetClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + " " + this.widgetClassName + "\" style=\"width: 100%;\"></div>");

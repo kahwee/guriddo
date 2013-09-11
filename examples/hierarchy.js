@@ -15,7 +15,7 @@ var TaskNameFormatter = function(row, cell, value, columnDef, dataContext) {
 	}
 };
 
-var columns = [{
+var columns2 = [{
 	id: "title",
 	name: "Title",
 	field: "title",
@@ -166,7 +166,7 @@ dataView.endUpdate();
 // initialize the grid
 window.dataView = dataView;
 
-grid = new Guriddo.WithFrozen("#test-grid", dataView, columns, options);
+grid = new Guriddo.WithFrozen("#test-grid", dataView, columns2, options);
 
 grid.gridFrozen.onCellChange.subscribe(function(e, args) {
 	dataView.updateItem(args.item.id, args.item);
