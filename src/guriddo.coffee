@@ -26,7 +26,7 @@ class GuriddoWithFrozen
 			#_(columnFrozen).pluck('width').each (width, index) ->
 			#	frozenWidth
 		if @gridMain?
-			@gridFrozen.setColumns columnFrozen
+			@gridMain.setColumns columnMain
 		[columnFrozen, columnMain]
 
 	getColumns: ->
