@@ -112,7 +112,7 @@
 
     GuriddoWithFrozen.prototype.updateFrozenWidth = function() {
       var frozenW;
-      frozenW = this.$frozen.find('.slick-header-column').width() + 10;
+      frozenW = this.$frozen.find('.slick-header-column').outerWidth();
       this.$frozen.css({
         left: "-" + frozenW + "px",
         width: "" + frozenW + "px"

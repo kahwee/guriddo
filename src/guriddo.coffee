@@ -72,7 +72,7 @@ class GuriddoWithFrozen
 			@updateFrozenWidth()
 
 	updateFrozenWidth: =>
-		frozenW = @$frozen.find('.slick-header-column').width() + 10;
+		frozenW = @$frozen.find('.slick-header-column').outerWidth();
 		@$frozen.css(
 			left: "-#{frozenW}px",
 			width: "#{frozenW}px",
