@@ -85,7 +85,7 @@
         _this = this;
       _ref = this.setColumns(this.columns), columnFrozen = _ref[0], columnMain = _ref[1];
       columnFrozenW = columnFrozen[0].width || 100;
-      this.el.css('margin-left', columnFrozenW).addClass('gurrido');
+      this.el.css('margin-left', columnFrozenW).addClass('guriddo');
       this.el.append("<div class=\"" + this.frozenClassName + " " + this.widgetClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + " " + this.widgetClassName + "\" style=\"width: 100%;\"></div>");
       this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, this.options);
       this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, columnMain, this.options);
