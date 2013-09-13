@@ -19,6 +19,14 @@ class GuriddoWithFrozen
 			column.grid = 0
 		for column in columnMain then do (column) ->
 			column.grid = 1
+
+		if @gridFrozen?
+			@gridFrozen.setColumns columnFrozen
+			@updateFrozenWidth()
+			#_(columnFrozen).pluck('width').each (width, index) ->
+			#	frozenWidth
+		if @gridMain?
+			@gridFrozen.setColumns columnFrozen
 		[columnFrozen, columnMain]
 
 	getColumns: ->

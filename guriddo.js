@@ -51,6 +51,13 @@
         column = columnMain[_j];
         _fn1(column);
       }
+      if (this.gridFrozen != null) {
+        this.gridFrozen.setColumns(columnFrozen);
+        this.updateFrozenWidth();
+      }
+      if (this.gridMain != null) {
+        this.gridFrozen.setColumns(columnFrozen);
+      }
       return [columnFrozen, columnMain];
     };
 
