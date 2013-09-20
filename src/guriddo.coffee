@@ -65,8 +65,13 @@ class GuriddoWithFrozen
 		@$frozenVp.scroll (ev) =>
 			@$mainVp.scrollTop(ev.target.scrollTop)
 
-		@$frozen.find('.slick-resizable-handle').on 'drag', (ev) =>
-			@updateFrozenWidth()
+		@hookEvents()
+
+		# On header's mouse enter, hook up 'drag' event
+		# This happens again and again but it is the only reliable method it seems
+		@gridFrozen.onHeaderMouseEnter.notify = (ev, args) =>
+			@$frozen.find('.slick-resizable-handle').on 'drag', (ev) =>
+				@updateFrozenWidth()
 
 		@gridFrozen.onColumnsResized.notify = (ev, args, e) =>
 			@updateFrozenWidth()
@@ -78,6 +83,26 @@ class GuriddoWithFrozen
 			width: "#{frozenW}px",
 		)
 		@el.css('margin-left', frozenW);
+
+	trigger: (ev, args, e) =>
+		e = e || new Slick.EventData()
+		args = args || {}
+		ev.notify args, e, @
+
+	hookEvents: =>
+		__thisObject = @
+		# Keys of the events
+		events = ['onColumnsReordered', 'onColumnsResized']
+		slickEvents = {}
+		for evName in events then do (evName) ->
+			slickEvents[evName] = new Slick.Event()
+		$.extend @, slickEvents
+
+		for grid in [@gridFrozen, @gridMain] then do (grid) =>
+			for evName in events then do (evName) =>
+				grid[evName].notify = (args, e) =>
+					@trigger __thisObject[evName], args, e
+
 
 	autosizeColumns: =>
 		if @$mainVpCv.width() < @$mainVp.width()

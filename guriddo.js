@@ -21,6 +21,8 @@
       this.columns = columns;
       this.options = options;
       this.autosizeColumns = __bind(this.autosizeColumns, this);
+      this.hookEvents = __bind(this.hookEvents, this);
+      this.trigger = __bind(this.trigger, this);
       this.updateFrozenWidth = __bind(this.updateFrozenWidth, this);
       this.initWithFrozen = __bind(this.initWithFrozen, this);
       this.setColumns = __bind(this.setColumns, this);
@@ -102,9 +104,12 @@
       this.$frozenVp.scroll(function(ev) {
         return _this.$mainVp.scrollTop(ev.target.scrollTop);
       });
-      this.$frozen.find('.slick-resizable-handle').on('drag', function(ev) {
-        return _this.updateFrozenWidth();
-      });
+      this.hookEvents();
+      this.gridFrozen.onHeaderMouseEnter.notify = function(ev, args) {
+        return _this.$frozen.find('.slick-resizable-handle').on('drag', function(ev) {
+          return _this.updateFrozenWidth();
+        });
+      };
       return this.gridFrozen.onColumnsResized.notify = function(ev, args, e) {
         return _this.updateFrozenWidth();
       };
@@ -118,6 +123,47 @@
         width: "" + frozenW + "px"
       });
       return this.el.css('margin-left', frozenW);
+    };
+
+    GuriddoWithFrozen.prototype.trigger = function(ev, args, e) {
+      e = e || new Slick.EventData();
+      args = args || {};
+      return ev.notify(args, e, this);
+    };
+
+    GuriddoWithFrozen.prototype.hookEvents = function() {
+      var evName, events, grid, slickEvents, __thisObject, _fn, _i, _j, _len, _len1, _ref, _results,
+        _this = this;
+      __thisObject = this;
+      events = ['onColumnsReordered', 'onColumnsResized'];
+      slickEvents = {};
+      _fn = function(evName) {
+        return slickEvents[evName] = new Slick.Event();
+      };
+      for (_i = 0, _len = events.length; _i < _len; _i++) {
+        evName = events[_i];
+        _fn(evName);
+      }
+      $.extend(this, slickEvents);
+      _ref = [this.gridFrozen, this.gridMain];
+      _results = [];
+      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+        grid = _ref[_j];
+        _results.push((function(grid) {
+          var _k, _len2, _results1;
+          _results1 = [];
+          for (_k = 0, _len2 = events.length; _k < _len2; _k++) {
+            evName = events[_k];
+            _results1.push((function(evName) {
+              return grid[evName].notify = function(args, e) {
+                return _this.trigger(__thisObject[evName], args, e);
+              };
+            })(evName));
+          }
+          return _results1;
+        })(grid));
+      }
+      return _results;
     };
 
     GuriddoWithFrozen.prototype.autosizeColumns = function() {
