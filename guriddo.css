@@ -1,16 +1,28 @@
-#test-grid {
-	height: 450px;
-}
 .guriddo {
+	min-height: 20px;
 	position: relative;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
 }
+
+.guriddo *, .guriddo *:before, .guriddo *:after {
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+}
+
 .guriddo-frozen {
 	-ms-overflow-style: none;
 }
+
+.guriddo-frozen .grid-canvas {
+	padding-bottom: 20px;
+}
+
 .guriddo-main {
 	-ms-overflow-style: -ms-autohiding-scrollbar;
 }
-.guriddo-widget {
-	height: 450px;
+
+.guriddo-frozen, .guriddo-main {
+	height: 100%;
 	position: absolute;
 }

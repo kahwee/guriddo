@@ -83,13 +83,15 @@
     };
 
     GuriddoWithFrozen.prototype.initWithFrozen = function() {
-      var columnFrozen, columnFrozenW, columnMain, _ref,
+      var columnFrozen, columnFrozenW, columnMain, optionsFrozen, _ref,
         _this = this;
       _ref = this.setColumns(this.columns), columnFrozen = _ref[0], columnMain = _ref[1];
       columnFrozenW = columnFrozen[0].width || 100;
       this.el.css('margin-left', columnFrozenW).addClass('guriddo');
-      this.el.append("<div class=\"" + this.frozenClassName + " " + this.widgetClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + " " + this.widgetClassName + "\" style=\"width: 100%;\"></div>");
-      this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, this.options);
+      this.el.append("<div class=\"" + this.frozenClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + "\" style=\"width: 100%;\"></div>");
+      optionsFrozen = JSON.parse(JSON.stringify(this.options));
+      optionsFrozen.enableColumnReorder = false;
+      this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, optionsFrozen);
       this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, columnMain, this.options);
       this.$frozen = $("" + this.container + " ." + this.frozenClassName);
       this.$main = $("" + this.container + " ." + this.mainClassName);
