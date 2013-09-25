@@ -56,6 +56,7 @@
       if (this.gridFrozen != null) {
         this.gridFrozen.setColumns(columnFrozen);
         this.updateFrozenWidth();
+        this.gridFrozen.autosizeColumns();
       }
       if (this.gridMain != null) {
         this.gridMain.setColumns(columnMain);

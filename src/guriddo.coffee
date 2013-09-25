@@ -23,6 +23,7 @@ class GuriddoWithFrozen
 		if @gridFrozen?
 			@gridFrozen.setColumns columnFrozen
 			@updateFrozenWidth()
+			@gridFrozen.autosizeColumns()
 			#_(columnFrozen).pluck('width').each (width, index) ->
 			#	frozenWidth
 		if @gridMain?
