@@ -52,6 +52,7 @@ class GuriddoWithFrozen
 		@el.css('margin-left', columnFrozenW).addClass('guriddo')
 		@el.append("<div class=\"#{@frozenClassName}\" style=\"width: #{columnFrozenW}px; left: -#{columnFrozenW}px; \"></div><div class=\"#{@mainClassName}\" style=\"width: 100%;\"></div>")
 		optionsFrozen = JSON.parse JSON.stringify(@options)
+		optionsFrozen.formatterFactory = @options.formatterFactory
 		optionsFrozen.enableColumnReorder = false;
 		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, columnFrozen, optionsFrozen)
 		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, columnMain, @options)

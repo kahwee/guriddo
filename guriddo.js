@@ -91,6 +91,7 @@
       this.el.css('margin-left', columnFrozenW).addClass('guriddo');
       this.el.append("<div class=\"" + this.frozenClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + "\" style=\"width: 100%;\"></div>");
       optionsFrozen = JSON.parse(JSON.stringify(this.options));
+      optionsFrozen.formatterFactory = this.options.formatterFactory;
       optionsFrozen.enableColumnReorder = false;
       this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, optionsFrozen);
       this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, columnMain, this.options);

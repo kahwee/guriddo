@@ -16,6 +16,15 @@ var TaskNameFormatter = function(row, cell, value, columnDef, dataContext) {
 };
 
 var columns2 = [{
+	id: "finish",
+	name: "Finish",
+	field: "finish",
+	format: {
+		type: 'datetime',
+		to: 'MM/DD',
+	},
+	minWidth: 160
+}, {
 	id: "title",
 	name: "Title",
 	field: "title",
@@ -55,11 +64,6 @@ var columns2 = [{
 	field: "start",
 	minWidth: 120
 }, {
-	id: "finish",
-	name: "Finish",
-	field: "finish",
-	minWidth: 160
-}, {
 	id: "effort-driven",
 	name: "Effort Driven",
 	width: 80,
@@ -68,8 +72,6 @@ var columns2 = [{
 	cssClass: "cell-effort-driven",
 	field: "effortDriven"
 }];
-
-
 
 // Get the item column value using a custom 'fieldIdx' column param
 var getItemColumnValue = function(item, column) {
@@ -93,7 +95,6 @@ var options = {
 	dataItemColumnValueExtractor: getItemColumnValue
 };
 
-
 var searchString = "";
 
 function myFilter(item) {
@@ -114,8 +115,6 @@ function myFilter(item) {
 
 	return true;
 }
-
-
 
 var data = [];
 var indent = 0;
@@ -159,9 +158,7 @@ dataView.setItems(data);
 dataView.setFilter(myFilter);
 dataView.endUpdate();
 
-
 //grid = new Guriddo.WithFrozen("#test-grid", data, columns, options);
-
 
 // initialize the grid
 window.dataView = dataView;
@@ -201,7 +198,6 @@ dataView.onRowsChanged.subscribe(function(e, args) {
 	grid.render();
 });
 
-
 var headerMenuPlugin = new Slick.Plugins.SelectHeader({});
 
 headerMenuPlugin.onBeforeMenuShow.subscribe(function(e, args) {
@@ -224,6 +220,5 @@ headerMenuPlugin.onCommand.subscribe(function(e, args) {
 });
 
 grid.gridMain.registerPlugin(headerMenuPlugin);
-
 
 window.grid = grid;
