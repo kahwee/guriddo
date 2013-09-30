@@ -13,22 +13,23 @@ class GuriddoWithFrozen
 			@initWithoutFrozen()
 
 	setColumns: (@columns) =>
-		columnFrozen = @columns[0...1]
-		columnMain = @columns[1...]
-		for column in columnFrozen then do (column) ->
-			column.grid = 0
-		for column in columnMain then do (column) ->
-			column.grid = 1
+		@columnsFrozen = []
+		@columnsMain = []
+		for column in @columns then do (column) =>
+			if column.grid is 0
+				column.grid = 0
+				@columnsFrozen.push column
+			else
+				column.grid = 1
+				@columnsMain.push column
 
 		if @gridFrozen?
-			@gridFrozen.setColumns columnFrozen
+			@gridFrozen.setColumns @columnsFrozen
 			@updateFrozenWidth()
 			@gridFrozen.autosizeColumns()
-			#_(columnFrozen).pluck('width').each (width, index) ->
-			#	frozenWidth
 		if @gridMain?
-			@gridMain.setColumns columnMain
-		[columnFrozen, columnMain]
+			@gridMain.setColumns @columnsMain
+		[@columnsFrozen, @columnsMain]
 
 	getColumns: ->
 		[].concat @gridFrozen.getColumns(), @gridMain.getColumns()
@@ -46,16 +47,20 @@ class GuriddoWithFrozen
 		@gridMain.updateRowCount()
 
 	initWithFrozen: =>
-		[columnFrozen, columnMain] = @setColumns(@columns)
-		columnFrozenW = columnFrozen[0].width || 100;
+		[@columnsFrozen, @columnsMain] = @setColumns(@columns)
+		@columnsFrozenW = 0
+		for column in @columnsFrozen then do (column) =>
+			# Just in case column width is not set
+			column.width = column.width || 100
+			@columnsFrozenW = @columnsFrozenW + parseInt(column.width, 10)
 
-		@el.css('margin-left', columnFrozenW).addClass('guriddo')
-		@el.append("<div class=\"#{@frozenClassName}\" style=\"width: #{columnFrozenW}px; left: -#{columnFrozenW}px; \"></div><div class=\"#{@mainClassName}\" style=\"width: 100%;\"></div>")
+		@el.css('margin-left', @columnsFrozenW).addClass('guriddo')
+		@el.append("<div class=\"#{@frozenClassName}\" style=\"width: #{@columnsFrozenW}px; left: -#{@columnsFrozenW}px; \"></div><div class=\"#{@mainClassName}\" style=\"width: 100%;\"></div>")
 		optionsFrozen = JSON.parse JSON.stringify(@options)
 		optionsFrozen.formatterFactory = @options.formatterFactory
 		optionsFrozen.enableColumnReorder = false;
-		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, columnFrozen, optionsFrozen)
-		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, columnMain, @options)
+		@gridFrozen = new Slick.Grid("#{@container} .#{@frozenClassName}", @data, @columnsFrozen, optionsFrozen)
+		@gridMain = new Slick.Grid("#{@container} .#{@mainClassName}", @data, @columnsMain, @options)
 
 		@$frozen = $("#{@container} .#{@frozenClassName}")
 		@$main = $("#{@container} .#{@mainClassName}")
@@ -74,19 +79,23 @@ class GuriddoWithFrozen
 		# On header's mouse enter, hook up 'drag' event
 		# This happens again and again but it is the only reliable method it seems
 		@gridFrozen.onHeaderMouseEnter.notify = (ev, args) =>
-			@$frozen.find('.slick-resizable-handle').on 'drag', (ev) =>
+			@$frozen.find('.slick-resizable-handle:last-child').on 'drag', (ev) =>
 				@updateFrozenWidth()
 
 		@gridFrozen.onColumnsResized.notify = (ev, args, e) =>
 			@updateFrozenWidth()
 
 	updateFrozenWidth: =>
+		frozenColumns = @$frozen.find('.slick-header-column')
 		frozenW = @$frozen.find('.slick-header-column').outerWidth();
+		@columnsFrozenW = 0
+		for column in frozenColumns then do (column) =>
+			@columnsFrozenW = @columnsFrozenW + parseInt($(column).outerWidth(), 10)
 		@$frozen.css(
-			left: "-#{frozenW}px",
-			width: "#{frozenW}px",
+			left: "-#{@columnsFrozenW}px",
+			width: "#{@columnsFrozenW}px",
 		)
-		@el.css('margin-left', frozenW);
+		@el.css('margin-left', @columnsFrozenW);
 
 	trigger: (ev, args, e) =>
 		e = e || new Slick.EventData()

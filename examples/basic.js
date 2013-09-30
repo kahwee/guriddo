@@ -4,6 +4,7 @@ var columns = [{
 	name: "Title",
 	field: "title",
 	width: 300,
+	grid: 0,
 }, {
 	id: "duration",
 	name: "Duration",

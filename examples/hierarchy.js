@@ -19,6 +19,7 @@ var columns2 = [{
 	id: "finish",
 	name: "Finish",
 	field: "finish",
+	grid: 0,
 	format: {
 		type: 'datetime',
 		to: 'MM/DD',
@@ -29,11 +30,13 @@ var columns2 = [{
 	name: "Title",
 	field: "title",
 	width: 220,
+	grid: 0,
 	cssClass: "cell-title",
 	formatter: TaskNameFormatter
 }, {
 	id: "title",
 	name: "Title",
+	grid: 0,
 	field: "title",
 	width: 120
 }, {

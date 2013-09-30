@@ -35,33 +35,34 @@
     }
 
     GuriddoWithFrozen.prototype.setColumns = function(columns) {
-      var column, columnFrozen, columnMain, _fn, _fn1, _i, _j, _len, _len1;
+      var column, _fn, _i, _len, _ref,
+        _this = this;
       this.columns = columns;
-      columnFrozen = this.columns.slice(0, 1);
-      columnMain = this.columns.slice(1);
+      this.columnsFrozen = [];
+      this.columnsMain = [];
+      _ref = this.columns;
       _fn = function(column) {
-        return column.grid = 0;
+        if (column.grid === 0) {
+          column.grid = 0;
+          return _this.columnsFrozen.push(column);
+        } else {
+          column.grid = 1;
+          return _this.columnsMain.push(column);
+        }
       };
-      for (_i = 0, _len = columnFrozen.length; _i < _len; _i++) {
-        column = columnFrozen[_i];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        column = _ref[_i];
         _fn(column);
       }
-      _fn1 = function(column) {
-        return column.grid = 1;
-      };
-      for (_j = 0, _len1 = columnMain.length; _j < _len1; _j++) {
-        column = columnMain[_j];
-        _fn1(column);
-      }
       if (this.gridFrozen != null) {
-        this.gridFrozen.setColumns(columnFrozen);
+        this.gridFrozen.setColumns(this.columnsFrozen);
         this.updateFrozenWidth();
         this.gridFrozen.autosizeColumns();
       }
       if (this.gridMain != null) {
-        this.gridMain.setColumns(columnMain);
+        this.gridMain.setColumns(this.columnsMain);
       }
-      return [columnFrozen, columnMain];
+      return [this.columnsFrozen, this.columnsMain];
     };
 
     GuriddoWithFrozen.prototype.getColumns = function() {
@@ -84,17 +85,26 @@
     };
 
     GuriddoWithFrozen.prototype.initWithFrozen = function() {
-      var columnFrozen, columnFrozenW, columnMain, optionsFrozen, _ref,
+      var column, optionsFrozen, _fn, _i, _len, _ref, _ref1,
         _this = this;
-      _ref = this.setColumns(this.columns), columnFrozen = _ref[0], columnMain = _ref[1];
-      columnFrozenW = columnFrozen[0].width || 100;
-      this.el.css('margin-left', columnFrozenW).addClass('guriddo');
-      this.el.append("<div class=\"" + this.frozenClassName + "\" style=\"width: " + columnFrozenW + "px; left: -" + columnFrozenW + "px; \"></div><div class=\"" + this.mainClassName + "\" style=\"width: 100%;\"></div>");
+      _ref = this.setColumns(this.columns), this.columnsFrozen = _ref[0], this.columnsMain = _ref[1];
+      this.columnsFrozenW = 0;
+      _ref1 = this.columnsFrozen;
+      _fn = function(column) {
+        column.width = column.width || 100;
+        return _this.columnsFrozenW = _this.columnsFrozenW + parseInt(column.width, 10);
+      };
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        column = _ref1[_i];
+        _fn(column);
+      }
+      this.el.css('margin-left', this.columnsFrozenW).addClass('guriddo');
+      this.el.append("<div class=\"" + this.frozenClassName + "\" style=\"width: " + this.columnsFrozenW + "px; left: -" + this.columnsFrozenW + "px; \"></div><div class=\"" + this.mainClassName + "\" style=\"width: 100%;\"></div>");
       optionsFrozen = JSON.parse(JSON.stringify(this.options));
       optionsFrozen.formatterFactory = this.options.formatterFactory;
       optionsFrozen.enableColumnReorder = false;
-      this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, columnFrozen, optionsFrozen);
-      this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, columnMain, this.options);
+      this.gridFrozen = new Slick.Grid("" + this.container + " ." + this.frozenClassName, this.data, this.columnsFrozen, optionsFrozen);
+      this.gridMain = new Slick.Grid("" + this.container + " ." + this.mainClassName, this.data, this.columnsMain, this.options);
       this.$frozen = $("" + this.container + " ." + this.frozenClassName);
       this.$main = $("" + this.container + " ." + this.mainClassName);
       this.$frozenVp = this.$frozen.find("." + this.slickGridVpClassName);
@@ -110,7 +120,7 @@
       });
       this.hookEvents();
       this.gridFrozen.onHeaderMouseEnter.notify = function(ev, args) {
-        return _this.$frozen.find('.slick-resizable-handle').on('drag', function(ev) {
+        return _this.$frozen.find('.slick-resizable-handle:last-child').on('drag', function(ev) {
           return _this.updateFrozenWidth();
         });
       };
@@ -120,13 +130,23 @@
     };
 
     GuriddoWithFrozen.prototype.updateFrozenWidth = function() {
-      var frozenW;
+      var column, frozenColumns, frozenW, _fn, _i, _len,
+        _this = this;
+      frozenColumns = this.$frozen.find('.slick-header-column');
       frozenW = this.$frozen.find('.slick-header-column').outerWidth();
+      this.columnsFrozenW = 0;
+      _fn = function(column) {
+        return _this.columnsFrozenW = _this.columnsFrozenW + parseInt($(column).outerWidth(), 10);
+      };
+      for (_i = 0, _len = frozenColumns.length; _i < _len; _i++) {
+        column = frozenColumns[_i];
+        _fn(column);
+      }
       this.$frozen.css({
-        left: "-" + frozenW + "px",
-        width: "" + frozenW + "px"
+        left: "-" + this.columnsFrozenW + "px",
+        width: "" + this.columnsFrozenW + "px"
       });
-      return this.el.css('margin-left', frozenW);
+      return this.el.css('margin-left', this.columnsFrozenW);
     };
 
     GuriddoWithFrozen.prototype.trigger = function(ev, args, e) {

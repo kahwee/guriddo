@@ -19,6 +19,7 @@ var columns = [{
 	id: "title",
 	name: "Title",
 	field: "title",
+	grid: 0,
 	width: 220,
 	cssClass: "cell-title",
 	formatter: TaskNameFormatter
@@ -81,8 +82,6 @@ var columns = [{
 	field: "effortDriven"
 }];
 
-
-
 var options = {
 	frozenColumn: true,
 	enableColumnReorder: false,
@@ -91,7 +90,6 @@ var options = {
 	formatterFactory: Guriddo.FormatterFactory,
 	syncColumnCellResize: true,
 };
-
 
 var searchString = "";
 
@@ -113,8 +111,6 @@ function myFilter(item) {
 
 	return true;
 }
-
-
 
 var data = [];
 var indent = 0;
@@ -158,9 +154,7 @@ dataView.setItems(data);
 dataView.setFilter(myFilter);
 dataView.endUpdate();
 
-
 //grid = new Guriddo.WithFrozen("#test-grid", data, columns, options);
-
 
 // initialize the grid
 window.dataView = dataView;
@@ -184,7 +178,6 @@ grid.gridFrozen.onClick.subscribe(function(e, args) {
 		e.stopImmediatePropagation();
 	}
 });
-
 
 // wire up model events to drive the grid
 dataView.onRowCountChanged.subscribe(function(e, args) {
