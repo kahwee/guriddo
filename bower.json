@@ -12,12 +12,12 @@
 		"slickgrid": "master",
 		"jquery": ">=1.10.2",
 		"lodash": "*",
-		"jquery.onescroll": "master",
 		"guriddo-formatfactory": "master",
-		"select2": "*"
 	},
 	"devDependencies": {
+		"jquery.onescroll": "master",
 		"moment": "~2.1.x",
-		"numeral": "~1.4.x"
+		"numeral": "~1.4.x",
+		"select2": "*"
 	}
 }
