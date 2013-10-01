@@ -7,6 +7,8 @@
 
     GuriddoWithFrozen.prototype.frozenClassName = 'guriddo-frozen';
 
+    GuriddoWithFrozen.prototype.frozenShadowClassName = 'guriddo-frozen-shadow';
+
     GuriddoWithFrozen.prototype.mainClassName = 'guriddo-main';
 
     GuriddoWithFrozen.prototype.widgetClassName = 'guriddo-widget';
@@ -23,6 +25,10 @@
       this.autosizeColumns = __bind(this.autosizeColumns, this);
       this.hookEvents = __bind(this.hookEvents, this);
       this.trigger = __bind(this.trigger, this);
+      this.updateMainWidth = __bind(this.updateMainWidth, this);
+      this.getDomOuterWidth = __bind(this.getDomOuterWidth, this);
+      this.getCombinedColumnsMinWidth = __bind(this.getCombinedColumnsMinWidth, this);
+      this.getCombinedColumnsWidth = __bind(this.getCombinedColumnsWidth, this);
       this.updateFrozenWidth = __bind(this.updateFrozenWidth, this);
       this.initWithFrozen = __bind(this.initWithFrozen, this);
       this.setColumns = __bind(this.setColumns, this);
@@ -57,10 +63,10 @@
       if (this.gridFrozen != null) {
         this.gridFrozen.setColumns(this.columnsFrozen);
         this.updateFrozenWidth();
-        this.gridFrozen.autosizeColumns();
       }
       if (this.gridMain != null) {
         this.gridMain.setColumns(this.columnsMain);
+        this.updateMainWidth();
       }
       return [this.columnsFrozen, this.columnsMain];
     };
@@ -113,6 +119,13 @@
       this.$mainVpCv = this.$mainVp.find(".grid-canvas");
       this.$frozenVp.css("overflow", "hidden");
       this.$mainVp.scroll(function(ev) {
+        var scrollLeft;
+        scrollLeft = ev.target.scrollLeft;
+        if (scrollLeft > 0) {
+          _this.$frozen.addClass(_this.frozenShadowClassName);
+        } else {
+          _this.$frozen.removeClass(_this.frozenShadowClassName);
+        }
         return _this.$frozenVp.scrollTop(ev.target.scrollTop);
       });
       this.$frozenVp.scroll(function(ev) {
@@ -149,6 +162,61 @@
       return this.el.css('margin-left', this.columnsFrozenW);
     };
 
+    GuriddoWithFrozen.prototype.getCombinedColumnsWidth = function(columns) {
+      return _(columns).pluck('width').reduce(function(sum, column) {
+        return sum + column;
+      });
+    };
+
+    GuriddoWithFrozen.prototype.getCombinedColumnsMinWidth = function(columns) {
+      return _(columns).pluck('minWidth').reduce(function(sum, column) {
+        return sum + column;
+      });
+    };
+
+    GuriddoWithFrozen.prototype.getDomOuterWidth = function(mainColumns) {
+      return _(mainColumns).map(function(column) {
+        return column.offsetWidth;
+      }).reduce(function(sum, column) {
+        return sum + column;
+      });
+    };
+
+    GuriddoWithFrozen.prototype.updateMainWidth = function() {
+      var dW, dWDivided, hasChanges, mainColumns, mainColumnsMinW, mainColumnsW, mainW;
+      mainColumns = this.$main.find('.slick-header-column');
+      mainColumnsW = this.getDomOuterWidth(mainColumns);
+      mainW = this.$main.outerWidth();
+      hasChanges = false;
+      if (mainW > mainColumnsW) {
+        dW = mainW - mainColumnsW;
+        dWDivided = Math.floor(dW / mainColumns.length);
+        _(this.columnsMain).each(function(column) {
+          var newWidth;
+          newWidth = column.width + dWDivided;
+          if (column.width !== newWidth) {
+            hasChanges = true;
+            return column.width += dWDivided;
+          }
+        });
+      } else if (mainW < mainColumnsW) {
+        mainColumnsMinW = this.getCombinedColumnsMinWidth(this.columnsMain);
+        dW = mainW - mainColumnsMinW;
+        dWDivided = Math.floor(dW / mainColumns.length);
+        _(this.columnsMain).each(function(column) {
+          var newWidth;
+          newWidth = column.minWidth + dWDivided;
+          if (column.width !== newWidth) {
+            hasChanges = true;
+            return column.width = column.minWidth + dWDivided;
+          }
+        });
+      }
+      if (hasChanges) {
+        return this.gridMain.setColumns(this.columnsMain);
+      }
+    };
+
     GuriddoWithFrozen.prototype.trigger = function(ev, args, e) {
       e = e || new Slick.EventData();
       args = args || {};
@@ -159,7 +227,7 @@
       var evName, events, grid, slickEvents, __thisObject, _fn, _i, _j, _len, _len1, _ref, _results,
         _this = this;
       __thisObject = this;
-      events = ['onColumnsReordered', 'onColumnsResized'];
+      events = ['onColumnsReordered', 'onColumnsResized', 'onSort'];
       slickEvents = {};
       _fn = function(evName) {
         return slickEvents[evName] = new Slick.Event();

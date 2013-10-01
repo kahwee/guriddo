@@ -1,5 +1,6 @@
 class GuriddoWithFrozen
 	frozenClassName: 'guriddo-frozen'
+	frozenShadowClassName: 'guriddo-frozen-shadow'
 	mainClassName: 'guriddo-main'
 	widgetClassName: 'guriddo-widget'
 	slickGridVpClassName: 'slick-viewport'
@@ -26,9 +27,9 @@ class GuriddoWithFrozen
 		if @gridFrozen?
 			@gridFrozen.setColumns @columnsFrozen
 			@updateFrozenWidth()
-			@gridFrozen.autosizeColumns()
 		if @gridMain?
 			@gridMain.setColumns @columnsMain
+			@updateMainWidth()
 		[@columnsFrozen, @columnsMain]
 
 	getColumns: ->
@@ -70,6 +71,12 @@ class GuriddoWithFrozen
 		@$mainVpCv = @$mainVp.find(".grid-canvas")
 		@$frozenVp.css "overflow", "hidden"
 		@$mainVp.scroll (ev) =>
+			scrollLeft = ev.target.scrollLeft
+			if scrollLeft > 0
+				@$frozen.addClass @frozenShadowClassName
+			else
+				@$frozen.removeClass @frozenShadowClassName
+
 			@$frozenVp.scrollTop(ev.target.scrollTop)
 		@$frozenVp.scroll (ev) =>
 			@$mainVp.scrollTop(ev.target.scrollTop)
@@ -87,7 +94,7 @@ class GuriddoWithFrozen
 
 	updateFrozenWidth: =>
 		frozenColumns = @$frozen.find('.slick-header-column')
-		frozenW = @$frozen.find('.slick-header-column').outerWidth();
+		frozenW = @$frozen.find('.slick-header-column').outerWidth()
 		@columnsFrozenW = 0
 		for column in frozenColumns then do (column) =>
 			@columnsFrozenW = @columnsFrozenW + parseInt($(column).outerWidth(), 10)
@@ -97,6 +104,52 @@ class GuriddoWithFrozen
 		)
 		@el.css('margin-left', @columnsFrozenW);
 
+	getCombinedColumnsWidth: (columns) =>
+		_(columns).pluck('width').reduce (sum, column) ->
+			sum + column
+
+	getCombinedColumnsMinWidth: (columns) =>
+		_(columns).pluck('minWidth').reduce (sum, column) ->
+			sum + column
+
+	# This gets all the offsetWidths for things passed in
+	getDomOuterWidth: (mainColumns) =>
+		_(mainColumns)
+			.map (column) ->
+				column.offsetWidth
+			.reduce (sum, column) ->
+				sum + column
+
+	updateMainWidth: =>
+		mainColumns = @$main.find('.slick-header-column')
+		mainColumnsW = @getDomOuterWidth(mainColumns)
+		mainW = @$main.outerWidth()
+		hasChanges = false
+		if mainW > mainColumnsW
+			# difference width
+			dW = mainW - mainColumnsW
+			dWDivided = Math.floor(dW / mainColumns.length)
+			_(@columnsMain)
+				.each (column) ->
+					newWidth = column.width + dWDivided
+					if column.width != newWidth
+						hasChanges = true
+						column.width += dWDivided
+		else if mainW < mainColumnsW
+			mainColumnsMinW = @getCombinedColumnsMinWidth @columnsMain
+			# difference width
+			dW = mainW - mainColumnsMinW
+			dWDivided = Math.floor(dW / mainColumns.length)
+			_(@columnsMain)
+				.each (column) ->
+					newWidth = column.minWidth + dWDivided
+					if column.width != newWidth
+						hasChanges = true
+						column.width = column.minWidth + dWDivided
+		# as setColumns is an expensive operation, only do this when there are changes.
+		if hasChanges
+			@gridMain.setColumns @columnsMain
+
 	trigger: (ev, args, e) =>
 		e = e || new Slick.EventData()
 		args = args || {}
@@ -105,7 +158,7 @@ class GuriddoWithFrozen
 	hookEvents: =>
 		__thisObject = @
 		# Keys of the events
-		events = ['onColumnsReordered', 'onColumnsResized']
+		events = ['onColumnsReordered', 'onColumnsResized', 'onSort']
 		slickEvents = {}
 		for evName in events then do (evName) ->
 			slickEvents[evName] = new Slick.Event()
