@@ -1,5 +1,6 @@
 class GuriddoWithFrozen
 	frozenClassName: 'guriddo-frozen'
+	frozenShadowClassName: 'guriddo-frozen-shadow'
 	mainClassName: 'guriddo-main'
 	widgetClassName: 'guriddo-widget'
 	slickGridVpClassName: 'slick-viewport'
@@ -70,6 +71,12 @@ class GuriddoWithFrozen
 		@$mainVpCv = @$mainVp.find(".grid-canvas")
 		@$frozenVp.css "overflow", "hidden"
 		@$mainVp.scroll (ev) =>
+			scrollLeft = ev.target.scrollLeft
+			if scrollLeft > 0
+				@$frozen.addClass @frozenShadowClassName
+			else
+				@$frozen.removeClass @frozenShadowClassName
+
 			@$frozenVp.scrollTop(ev.target.scrollTop)
 		@$frozenVp.scroll (ev) =>
 			@$mainVp.scrollTop(ev.target.scrollTop)
@@ -105,7 +112,7 @@ class GuriddoWithFrozen
 	hookEvents: =>
 		__thisObject = @
 		# Keys of the events
-		events = ['onColumnsReordered', 'onColumnsResized']
+		events = ['onColumnsReordered', 'onColumnsResized', 'onSort']
 		slickEvents = {}
 		for evName in events then do (evName) ->
 			slickEvents[evName] = new Slick.Event()

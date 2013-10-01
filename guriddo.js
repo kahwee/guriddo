@@ -7,6 +7,8 @@
 
     GuriddoWithFrozen.prototype.frozenClassName = 'guriddo-frozen';
 
+    GuriddoWithFrozen.prototype.frozenShadowClassName = 'guriddo-frozen-shadow';
+
     GuriddoWithFrozen.prototype.mainClassName = 'guriddo-main';
 
     GuriddoWithFrozen.prototype.widgetClassName = 'guriddo-widget';
@@ -113,6 +115,13 @@
       this.$mainVpCv = this.$mainVp.find(".grid-canvas");
       this.$frozenVp.css("overflow", "hidden");
       this.$mainVp.scroll(function(ev) {
+        var scrollLeft;
+        scrollLeft = ev.target.scrollLeft;
+        if (scrollLeft > 0) {
+          _this.$frozen.addClass(_this.frozenShadowClassName);
+        } else {
+          _this.$frozen.removeClass(_this.frozenShadowClassName);
+        }
         return _this.$frozenVp.scrollTop(ev.target.scrollTop);
       });
       this.$frozenVp.scroll(function(ev) {
@@ -159,7 +168,7 @@
       var evName, events, grid, slickEvents, __thisObject, _fn, _i, _j, _len, _len1, _ref, _results,
         _this = this;
       __thisObject = this;
-      events = ['onColumnsReordered', 'onColumnsResized'];
+      events = ['onColumnsReordered', 'onColumnsResized', 'onSort'];
       slickEvents = {};
       _fn = function(evName) {
         return slickEvents[evName] = new Slick.Event();
