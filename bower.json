@@ -12,7 +12,7 @@
 		"slickgrid": "master",
 		"jquery": ">=1.10.2",
 		"lodash": "*",
-		"guriddo-formatfactory": "master",
+		"guriddo-formatfactory": "master"
 	},
 	"devDependencies": {
 		"jquery.onescroll": "master",
