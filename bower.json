@@ -11,13 +11,13 @@
 	"dependencies": {
 		"slickgrid": "master",
 		"jquery": ">=1.10.2",
-		"lodash": ">=1.3.1",
-		"jquery.onescroll": "master",
-		"guriddo-formatfactory": "master",
-		"select2": "~3.4.2"
+		"lodash": "*",
+		"guriddo-formatfactory": "master"
 	},
 	"devDependencies": {
+		"jquery.onescroll": "master",
 		"moment": "~2.1.x",
-		"numeral": "~1.4.x"
+		"numeral": "~1.4.x",
+		"select2": "*"
 	}
 }
