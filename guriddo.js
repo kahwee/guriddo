@@ -66,7 +66,6 @@
       }
       if (this.gridMain != null) {
         this.gridMain.setColumns(this.columnsMain);
-        this.updateMainWidth();
       }
       return [this.columnsFrozen, this.columnsMain];
     };

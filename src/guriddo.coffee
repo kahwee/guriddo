@@ -29,7 +29,7 @@ class GuriddoWithFrozen
 			@updateFrozenWidth()
 		if @gridMain?
 			@gridMain.setColumns @columnsMain
-			@updateMainWidth()
+			#@updateMainWidth()
 		[@columnsFrozen, @columnsMain]
 
 	getColumns: ->
