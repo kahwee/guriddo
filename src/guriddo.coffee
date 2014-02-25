@@ -121,9 +121,22 @@ class GuriddoWithFrozen
 				sum + column
 
 	updateMainWidth: =>
+		getScrollBarWidth = () ->
+			$outer = $('<div>').css(
+				visibility: 'hidden'
+				width: 100
+				overflow: 'scroll'
+			).appendTo('body')
+			widthWithScroll = $('<div>').css(
+				width: '100%'
+			).appendTo($outer).outerWidth()
+			$outer.remove()
+			return 100 - widthWithScroll
+			
 		mainColumns = @$main.find('.slick-header-column')
 		mainColumnsW = @getDomOuterWidth(mainColumns)
-		mainW = @$main.outerWidth()
+		mainW = @$main.outerWidth() - getScrollBarWidth()
+			
 		hasChanges = false
 		if mainW > mainColumnsW
 			# difference width

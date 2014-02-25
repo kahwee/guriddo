@@ -182,10 +182,23 @@
     };
 
     GuriddoWithFrozen.prototype.updateMainWidth = function() {
-      var dW, dWDivided, hasChanges, mainColumns, mainColumnsMinW, mainColumnsW, mainW;
+      var dW, dWDivided, getScrollBarWidth, hasChanges, mainColumns, mainColumnsMinW, mainColumnsW, mainW;
+      getScrollBarWidth = function() {
+        var $outer, widthWithScroll;
+        $outer = $('<div>').css({
+          visibility: 'hidden',
+          width: 100,
+          overflow: 'scroll'
+        }).appendTo('body');
+        widthWithScroll = $('<div>').css({
+          width: '100%'
+        }).appendTo($outer).outerWidth();
+        $outer.remove();
+        return 100 - widthWithScroll;
+      };
       mainColumns = this.$main.find('.slick-header-column');
       mainColumnsW = this.getDomOuterWidth(mainColumns);
-      mainW = this.$main.outerWidth();
+      mainW = this.$main.outerWidth() - getScrollBarWidth();
       hasChanges = false;
       if (mainW > mainColumnsW) {
         dW = mainW - mainColumnsW;
