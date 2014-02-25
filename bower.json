@@ -9,10 +9,10 @@
 		"tests"
 	],
 	"dependencies": {
-		"slickgrid": "master",
+		"slickgrid": "*",
 		"jquery": ">=1.10.2",
 		"lodash": "*",
-		"guriddo-formatfactory": "master"
+		"guriddo-formatfactory": "*"
 	},
 	"devDependencies": {
 		"jquery.onescroll": "master",
