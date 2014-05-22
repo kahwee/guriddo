@@ -1,6 +1,6 @@
 {
 	"name": "guriddo",
-	"version": "0.1",
+	"version": "0.2.0",
 	"ignore": [
 		"**/.*",
 		"node_modules",
@@ -10,14 +10,14 @@
 	],
 	"dependencies": {
 		"slickgrid": "*",
-		"jquery": ">=1.10.2",
+		"jquery": "*",
 		"lodash": "*",
 		"guriddo-formatfactory": "*"
 	},
 	"devDependencies": {
 		"jquery.onescroll": "master",
-		"moment": "~2.1.x",
-		"numeral": "~1.4.x",
+		"moment": "*",
+		"numeral": "*",
 		"select2": "*"
 	}
 }
