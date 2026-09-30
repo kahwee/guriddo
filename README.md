@@ -1,13 +1,28 @@
-guriddo
-=======
+# guriddo
 
-Guriddo is essential a spreadsheet that supports frozen columns. It does not attempt to change Michael Leibman's [SlickGrid](https://github.com/mleibman/SlickGrid) and simply wraps around SlickGrid to make it support frozen column.
-### Prerequisites
+Wrapper around SlickGrid 2.2 that adds frozen columns.
 
-* SlickGrid 2.2 (Latest in GitHub)
+## Install and use
 
-### More information
+The original distribution uses Bower. Install this checkout's Bower dependencies,
+then load SlickGrid, `guriddo.css`, and `guriddo.js` in your page:
 
-Uses the following libraries.
+```sh
+bower install
+```
 
-* SlickGrid: https://github.com/mleibman/SlickGrid
+```js
+const grid = new Guriddo.WithFrozen('#grid', data, columns, {
+  frozenColumn: true,
+  enableColumnReorder: false
+})
+```
+
+See [examples/basic.html](examples/basic.html) and
+[examples/basic.js](examples/basic.js) for the full dependency order and data.
+The historical Bower/Grunt toolchain and browser behavior were not run in this
+pass. SlickGrid 2.2 is the original target, not a current “latest” version.
+
+## License
+
+MIT
